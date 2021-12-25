@@ -1,0 +1,17 @@
+
+# log
+npm-debug.log
+lerna-debug.log
+
+
+# ide
+/.idea
+/.vscode
+
+
+# node modules
+node_modules/
+
+#build
+dist/
+build/

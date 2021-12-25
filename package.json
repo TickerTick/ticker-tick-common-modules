@@ -1,0 +1,13 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "bootstrap": "lerna bootstrap",
+    "build:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm run build",
+    "link:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm link",
+    "unlink:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm unlink"
+  },
+  "devDependencies": {
+    "lerna": "^4.0.0"
+  }
+}
