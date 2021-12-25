@@ -8,6 +8,7 @@ module.exports = {
     filename: "index.js",
     libraryTarget: "commonjs2",
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
