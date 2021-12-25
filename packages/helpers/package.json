@@ -5,7 +5,7 @@
   "keywords": [
     "helpers"
   ],
-  "author": "yumindev <yumindev@gmail.com>",
+  "author": "yumindev <g@tickertick.com>",
   "homepage": "https://github.com/TickerTick/ticker-tick-common-modules#readme",
   "license": "MIT",
   "main": "lib/index.js",
