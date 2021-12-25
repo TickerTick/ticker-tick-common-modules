@@ -1,6 +1,6 @@
 {
   "name": "@tickertick/helpers",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "the utility helpers of tickertick",
   "keywords": [
     "helpers"
@@ -8,14 +8,13 @@
   "author": "yumindev <g@tickertick.com>",
   "homepage": "https://github.com/TickerTick/ticker-tick-common-modules#readme",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "lib/index.js",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
   },
   "files": [
     "lib",
-    "dist",
     "package.json",
     "package-lock.json",
     "README.md"
