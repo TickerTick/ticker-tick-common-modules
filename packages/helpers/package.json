@@ -1,6 +1,6 @@
 {
   "name": "@tickertick/helpers",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "the utility helpers of tickertick",
   "keywords": [
     "helpers"
@@ -14,7 +14,10 @@
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "dist",
+    "package.json",
+    "package-lock.json",
+    "README.md"
   ],
   "publishConfig": {
     "access": "public"
