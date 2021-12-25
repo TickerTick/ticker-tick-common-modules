@@ -6,7 +6,7 @@
     "build:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm run build",
     "link:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm link",
     "unlink:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm unlink",
-    "publish:helpers": "lerna exec --scope=@tickertick/helpers --stream -- npm publish --access public"
+    "publish:helpers": "npm run build:helpers && lerna exec --scope=@tickertick/helpers --stream -- npm publish --access public"
   },
   "devDependencies": {
     "lerna": "^4.0.0"
