@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { kDefaultFilter } from "./filter-helpers.js";
+import queryString from "query-string";
 
 const TICKER_TICK_SITE_REGEX = new RegExp("^https://.*tickertick.com/");
 const HIGH_QUALITY_SOURCE_TYPE = [
@@ -206,4 +207,18 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
   params.append("n", n);
   params.append("q", query);
   return params;
+};
+
+export const buildUrlWithUtmParams = (url, utmParams) => {
+  const urlObj = new URL(url);
+  const parsed = queryString.parse(urlObj.search);
+  const newUrlSearch = queryString.stringify({
+    ...parsed,
+    utm_source: utmParams.utm_source,
+    utm_campaign: utmParams.utm_campaign,
+    utm_medium: utmParams.utm_medium,
+  });
+
+  urlObj.search = `?${newUrlSearch}`;
+  return urlObj.toString(); // urlObj.href also works
 };
