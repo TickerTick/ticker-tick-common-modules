@@ -153,7 +153,13 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     // This is an optimization to help the backend retrieve stories faster.
     ticker_term_prefix = "t0:";
   }
-  const or_terms = tickers.map((t) => ticker_term_prefix + t);
+  const or_terms = tickers.map((t) => {
+    const term = ticker_term_prefix + t;
+    // "TT:" only matches titles.
+    const title_term = ticker_term_prefix.toUpperCase() + t;
+    // Only fin news stories can match descriptions. 
+    `(or {title_term} (and {term} FIN_BIZ_NEWS_QUERY))`
+  });
   let query = `(or ${or_terms.join(" ")})`;
 
   if (useSourceTypes) {
