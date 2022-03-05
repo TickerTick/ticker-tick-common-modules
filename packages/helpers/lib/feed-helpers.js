@@ -158,7 +158,7 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     // "TT:" only matches titles.
     const title_term = ticker_term_prefix.toUpperCase() + t;
     // Only fin news stories can match descriptions. 
-    `(or {title_term} (and {term} FIN_BIZ_NEWS_QUERY))`
+    return `(or {title_term} (and {term} FIN_BIZ_NEWS_QUERY))`;
   });
   let query = `(or ${or_terms.join(" ")})`;
 
