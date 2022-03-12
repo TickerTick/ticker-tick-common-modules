@@ -148,13 +148,17 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     }
     return types > 0 && non_sec_types == 0;
   };
+  const only_sec_stories = onlySecStories(filters.storyTypes);
   let ticker_term_prefix = "tt:";
-  if (onlySecStories(filters.storyTypes)) {
+  if (only_sec_stories) {
     // This is an optimization to help the backend retrieve stories faster.
     ticker_term_prefix = "t0:";
   }
   const or_terms = tickers.map((t) => {
     const term = ticker_term_prefix + t;
+    if (only_sec_stories) {
+      return term;
+    }
     // "TT:" only matches titles.
     const title_term = ticker_term_prefix.toUpperCase() + t;
     // Only fin news stories can match descriptions. 
