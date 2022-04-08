@@ -26,9 +26,9 @@ export const kFullFilterObject = {
     exclusions: {
         unimportant_sec_filing: {
             value: "unimportant_sec_filing",
-            label: "Unimportant SEC filing",
+            label: "Less important SEC filing",
         },
-        ugc: { value: "ugc", label: "Stories from forums (e.g. Reddit)" },
+        ugc: { value: "ugc", label: "UGC stories (e.g. Reddit)" },
         trading_activity: { value: "trading_activity", label: "Trading Activity" },
         market_news: { value: "market_news", label: "Market News" },
     },
