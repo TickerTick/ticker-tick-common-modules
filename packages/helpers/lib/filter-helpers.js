@@ -6,6 +6,10 @@ export const kFullFilterObject = {
             value: "financial_business_news",
             label: "Best business news",
         },
+        analysis: {
+            value: "analysis",
+            label: "Stock analysis",
+        },
         most_relevant: {
             value: "most_relevant",
             label: "Most relevant news",
