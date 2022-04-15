@@ -14,6 +14,8 @@ const HIGH_QUALITY_SOURCE_TYPE = [
 
 const FIN_BIZ_NEWS_QUERY = "T:fin_news";
 
+const ANALYSIS_QUERY = "T:analysis";
+
 const EARNINGS_CALL_QUERY = "T:earning";
 
 const MARKET_NEWS_QUERY = "T:market";
@@ -54,6 +56,7 @@ const kStoryTypeQueryMap = {
   trading_activity: TRADING_ACTIVITY_QUERY,
   market_news: MARKET_NEWS_QUERY,
   financial_business_news: FIN_BIZ_NEWS_QUERY,
+  analysis: ANALYSIS_QUERY,
 };
 
 const kSecStoryTypes = new Set([
