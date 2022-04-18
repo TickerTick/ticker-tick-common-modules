@@ -1,6 +1,6 @@
 {
   "name": "@tickertick/helpers",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "the utility helpers of tickertick",
   "keywords": [
     "helpers"
