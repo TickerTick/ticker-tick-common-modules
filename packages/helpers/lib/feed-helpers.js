@@ -133,7 +133,7 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
 
   filters = Object.assign(kDefaultFilter, filters);
 
-  const { lastId, useSourceTypes } = opts;
+  const { lastId, useSourceTypes, blocked_websites} = opts;
 
   const params = new URLSearchParams();
 
@@ -205,10 +205,31 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     n = 51;
   }
 
-  const exclusion_queries = extractSubqueries(
+  let exclusion_queries = extractSubqueries(
     kExclusionQueryMap,
     filters.exclusions
   );
+  if (blocked_websites) {
+    const blocked_websites_terms = blocked_websites.map(
+        (website) => {
+            const parts = website.split(".");
+            if (parts.length < 2) {
+                // Not a valid website
+                return "";
+            }
+            const domain_term = "s:" + parts[0];
+            const tld_term = "tld:" + parts.slice(1).join(".");
+            return `(and ${domain_term} ${tld_term})`
+        }
+    ).filter(
+        // Remove empty terms
+        (term) => term.length > 0
+    );
+    if (blocked_websites_terms.length > 0) {
+        exclusion_queries.push(`(or ${blocked_websites_terms.join(" ")})`);
+    }
+  }
+
   if (exclusion_queries.length > 0) {
     query = `(diff ${query} (or ${exclusion_queries.join(" ")}))`;
   }
