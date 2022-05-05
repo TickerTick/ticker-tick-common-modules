@@ -5,11 +5,7 @@ import queryString from "query-string";
 const TICKER_TICK_SITE_REGEX = new RegExp("^https://.*tickertick.com/");
 const HIGH_QUALITY_SOURCE_TYPE = [
   "us_rss",
-  "cn_rss",
   "us_sec",
-  "sh_sec",
-  "sz_sec",
-  "hk_sec",
 ];
 
 const FIN_BIZ_NEWS_QUERY = "T:fin_news";
@@ -176,7 +172,6 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
       (t) => "st:" + t
     ).join(" ")}))`;
   }
-  params.append("lang", `${filters.languages.join(",")}`);
   if (lastId) {
     params.append("last", lastId);
   }
