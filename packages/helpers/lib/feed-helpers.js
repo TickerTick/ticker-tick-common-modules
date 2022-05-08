@@ -12,6 +12,8 @@ const FIN_BIZ_NEWS_QUERY = "T:fin_news";
 
 const ANALYSIS_QUERY = "T:analysis";
 
+const INDUSTRY_QUERY = "T:industry";
+
 const EARNINGS_CALL_QUERY = "T:earning";
 
 const MARKET_NEWS_QUERY = "T:market";
@@ -53,6 +55,7 @@ const kStoryTypeQueryMap = {
   market_news: MARKET_NEWS_QUERY,
   financial_business_news: FIN_BIZ_NEWS_QUERY,
   analysis: ANALYSIS_QUERY,
+  industry: INDUSTRY_QUERY,
 };
 
 const kSecStoryTypes = new Set([
@@ -160,7 +163,12 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     }
     // "TT:" only matches titles.
     const title_term = ticker_term_prefix.toUpperCase() + t;
-    const top_type_terms = `(or ${FIN_BIZ_NEWS_QUERY} ${ANALYSIS_QUERY})`;
+    const high_prio_story_type_queries = [
+      FIN_BIZ_NEWS_QUERY,
+      ANALYSIS_QUERY,
+      INDUSTRY_QUERY
+    ];
+    const top_type_terms = `(or ${high_prio_story_type_queries.join(" ")})`;
     // Only fin news stories can match descriptions. 
     return `(or ${title_term} (and ${term} ${top_type_terms}))`;
   });
