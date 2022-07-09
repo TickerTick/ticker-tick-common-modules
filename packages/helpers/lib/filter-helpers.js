@@ -21,7 +21,7 @@ export const kFullFilterObject = {
         sec_filing: { value: "sec_filing", label: "SEC filing" },
         financial_sec_filing: {
             value: "financial_sec_filing",
-            label: "Quarterly/Annual report SEC filing",
+            label: "Financial report",
         },
         ipo_sec_filing: { value: "ipo_sec_filing", label: "IPO SEC filing" },
         earnings_call: {
