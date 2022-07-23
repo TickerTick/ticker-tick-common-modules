@@ -46,7 +46,7 @@ const kExclusionQueryMap = {
   market_news: MARKET_NEWS_QUERY,
 };
 
-const BEST_TAG = "best";
+const BEST_TAG = ".best.";
 
 const kStoryTypeQueryMap = {
   sec_filing: SEC_FILING_QUERY,
