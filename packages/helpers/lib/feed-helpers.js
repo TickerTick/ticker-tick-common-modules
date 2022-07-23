@@ -46,6 +46,8 @@ const kExclusionQueryMap = {
   market_news: MARKET_NEWS_QUERY,
 };
 
+const BEST_TAG = "best";
+
 const kStoryTypeQueryMap = {
   sec_filing: SEC_FILING_QUERY,
   financial_sec_filing: FINANCIAL_SEC_FILING_QUERY,
@@ -75,6 +77,31 @@ const isValidUrl = (url) => {
   }
   return isValid;
 };
+
+export function extractTopStories(stories, minClusterSize=3) {
+  let topStories = [];
+  for (let story of stories) {
+    let isTopStory = false;
+    if (story.similar_stories) {
+      if (1 + story.similar_stories.length >= minClusterSize) {
+        isTopStory = true;
+      } else if (story.tags && (BEST_TAG in story.tags)) {
+        isTopStory = true;
+      } else if (story.similar_stories_full) {
+        for (let ss of story.similar_stories_full) {
+          if (ss.tags && (BEST_TAG in ss.tags)) {
+            isTopStory = true;
+            break;
+          }
+        }
+      }
+    }
+    if (isTopStory) {
+      topStories.push(story);
+    }
+  }
+  return topStories;
+}
 
 // May throw an exception
 export async function fetchStories(feedUrl) {
@@ -196,7 +223,7 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     ];
     const top_type_terms = `(or ${high_prio_story_type_queries.join(" ")})`;
     // Only fin news stories can match descriptions. 
-    return `(or ${title_term} (and tag:best ${term} ${top_type_terms}))`;
+    return `(or ${title_term} (and tag:${BEST_TAG} ${term} ${top_type_terms}))`;
   });
   let query = `(or ${or_terms.join(" ")})`;
 
