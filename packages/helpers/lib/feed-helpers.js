@@ -80,16 +80,22 @@ const isValidUrl = (url) => {
 
 export function extractTopStories(stories, minClusterSize=3) {
   let topStories = [];
+  const isBest = function (story) {
+    return story.tags && (BEST_TAG in story.tags);
+  };
+
   for (let story of stories) {
     let isTopStory = false;
-    if (story.similar_stories) {
+    if (minClusterSize == 1) {
+      isTopStory = isBest(story);
+    } else if (story.similar_stories) {
       if (1 + story.similar_stories.length >= minClusterSize) {
         isTopStory = true;
-      } else if (story.tags && (BEST_TAG in story.tags)) {
+      } else if (isBest(story)) {
         isTopStory = true;
       } else if (story.similar_stories_full) {
         for (let ss of story.similar_stories_full) {
-          if (ss.tags && (BEST_TAG in ss.tags)) {
+          if (isBest(story)) {
             isTopStory = true;
             break;
           }
