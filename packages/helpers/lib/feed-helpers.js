@@ -134,6 +134,9 @@ export async function fetchStories(feedUrl) {
       let bestIdx = story.tags.indexOf(BEST_TAG);
       if (bestIdx >= 0) {
         story.tags.splice(bestIdx, 1);
+        if (story.tags.length == 0) {
+          delete story.tags;
+        }
       }
     }
     // Remove 'favicon_url' to any other site.
