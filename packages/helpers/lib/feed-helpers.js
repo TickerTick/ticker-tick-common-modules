@@ -78,7 +78,7 @@ const isValidUrl = (url) => {
   return isValid;
 };
 const isBest = function (story) {
-  if (story.tags && (BEST_TAG in story.tags)) {
+  if (story.tags && story.tags.indexOf(BEST_TAG) >= 0) {
     return true;
   }
   if (story.best) {
