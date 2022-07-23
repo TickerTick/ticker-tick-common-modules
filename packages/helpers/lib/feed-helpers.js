@@ -125,6 +125,31 @@ export async function fetchStories(feedUrl) {
   return result;
 }
 
+function getBlockedWebsitesTerm(blocked_websites) {
+  const blocked_websites_terms = blocked_websites.map(
+    (website) => {
+        const parts = website.split(".");
+        if (parts.length < 2) {
+            // Not a valid website
+            return "";
+        }
+        const domain_term = "s:" + parts[0];
+        const tld_term = "tld:" + parts.slice(1).join(".");
+        return `(and ${domain_term} ${tld_term})`
+    }
+  ).filter(
+    // Remove empty terms
+    (term) => term.length > 0
+  );
+  if (blocked_websites_terms.length == 0) {
+    return null;
+  }
+  if (blocked_websites_terms.length == 1) {
+    return blocked_websites_terms[0];
+  }  
+  return `(or ${blocked_websites_terms.join(" ")})`;
+}
+
 export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
   if (typeof tickers === "string") {
     tickers = [tickers];
@@ -166,11 +191,12 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     const high_prio_story_type_queries = [
       FIN_BIZ_NEWS_QUERY,
       ANALYSIS_QUERY,
-      INDUSTRY_QUERY
+      INDUSTRY_QUERY,
+      EARNINGS_CALL_QUERY,
     ];
     const top_type_terms = `(or ${high_prio_story_type_queries.join(" ")})`;
     // Only fin news stories can match descriptions. 
-    return `(or ${title_term} (and ${term} ${top_type_terms}))`;
+    return `(or ${title_term} (and tag:best ${term} ${top_type_terms}))`;
   });
   let query = `(or ${or_terms.join(" ")})`;
 
@@ -213,23 +239,9 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     filters.exclusions
   );
   if (blocked_websites) {
-    const blocked_websites_terms = blocked_websites.map(
-        (website) => {
-            const parts = website.split(".");
-            if (parts.length < 2) {
-                // Not a valid website
-                return "";
-            }
-            const domain_term = "s:" + parts[0];
-            const tld_term = "tld:" + parts.slice(1).join(".");
-            return `(and ${domain_term} ${tld_term})`
-        }
-    ).filter(
-        // Remove empty terms
-        (term) => term.length > 0
-    );
-    if (blocked_websites_terms.length > 0) {
-        exclusion_queries.push(`(or ${blocked_websites_terms.join(" ")})`);
+    const blocked_websites_or_term = getBlockedWebsitesTerm(blocked_websites);
+    if (blocked_websites_or_term) {
+        exclusion_queries.push(blocked_websites_or_term);
     }
   }
 
