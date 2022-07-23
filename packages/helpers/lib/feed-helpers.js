@@ -46,6 +46,8 @@ const kExclusionQueryMap = {
   market_news: MARKET_NEWS_QUERY,
 };
 
+const BEST_TAG = "best";
+
 const kStoryTypeQueryMap = {
   sec_filing: SEC_FILING_QUERY,
   financial_sec_filing: FINANCIAL_SEC_FILING_QUERY,
@@ -75,6 +77,37 @@ const isValidUrl = (url) => {
   }
   return isValid;
 };
+
+export function extractTopStories(stories, minClusterSize=3) {
+  let topStories = [];
+  const isBest = function (story) {
+    return story.tags && (BEST_TAG in story.tags);
+  };
+
+  for (let story of stories) {
+    let isTopStory = false;
+    if (minClusterSize == 1) {
+      isTopStory = isBest(story);
+    } else if (story.similar_stories) {
+      if (1 + story.similar_stories.length >= minClusterSize) {
+        isTopStory = true;
+      } else if (isBest(story)) {
+        isTopStory = true;
+      } else if (story.similar_stories_full) {
+        for (let ss of story.similar_stories_full) {
+          if (isBest(story)) {
+            isTopStory = true;
+            break;
+          }
+        }
+      }
+    }
+    if (isTopStory) {
+      topStories.push(story);
+    }
+  }
+  return topStories;
+}
 
 // May throw an exception
 export async function fetchStories(feedUrl) {
@@ -125,6 +158,31 @@ export async function fetchStories(feedUrl) {
   return result;
 }
 
+function getBlockedWebsitesTerm(blocked_websites) {
+  const blocked_websites_terms = blocked_websites.map(
+    (website) => {
+        const parts = website.split(".");
+        if (parts.length < 2) {
+            // Not a valid website
+            return "";
+        }
+        const domain_term = "s:" + parts[0];
+        const tld_term = "tld:" + parts.slice(1).join(".");
+        return `(and ${domain_term} ${tld_term})`
+    }
+  ).filter(
+    // Remove empty terms
+    (term) => term.length > 0
+  );
+  if (blocked_websites_terms.length == 0) {
+    return null;
+  }
+  if (blocked_websites_terms.length == 1) {
+    return blocked_websites_terms[0];
+  }  
+  return `(or ${blocked_websites_terms.join(" ")})`;
+}
+
 export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
   if (typeof tickers === "string") {
     tickers = [tickers];
@@ -166,11 +224,12 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     const high_prio_story_type_queries = [
       FIN_BIZ_NEWS_QUERY,
       ANALYSIS_QUERY,
-      INDUSTRY_QUERY
+      INDUSTRY_QUERY,
+      EARNINGS_CALL_QUERY,
     ];
     const top_type_terms = `(or ${high_prio_story_type_queries.join(" ")})`;
     // Only fin news stories can match descriptions. 
-    return `(or ${title_term} (and ${term} ${top_type_terms}))`;
+    return `(or ${title_term} (and tag:${BEST_TAG} ${term} ${top_type_terms}))`;
   });
   let query = `(or ${or_terms.join(" ")})`;
 
@@ -213,23 +272,9 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
     filters.exclusions
   );
   if (blocked_websites) {
-    const blocked_websites_terms = blocked_websites.map(
-        (website) => {
-            const parts = website.split(".");
-            if (parts.length < 2) {
-                // Not a valid website
-                return "";
-            }
-            const domain_term = "s:" + parts[0];
-            const tld_term = "tld:" + parts.slice(1).join(".");
-            return `(and ${domain_term} ${tld_term})`
-        }
-    ).filter(
-        // Remove empty terms
-        (term) => term.length > 0
-    );
-    if (blocked_websites_terms.length > 0) {
-        exclusion_queries.push(`(or ${blocked_websites_terms.join(" ")})`);
+    const blocked_websites_or_term = getBlockedWebsitesTerm(blocked_websites);
+    if (blocked_websites_or_term) {
+        exclusion_queries.push(blocked_websites_or_term);
     }
   }
 

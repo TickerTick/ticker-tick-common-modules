@@ -45,7 +45,7 @@ export const kFullFilterObject = {
 export const kDefaultFilter = {
     // An empty array means all types are acceptable.
     storyTypes: [],
-    exclusions: ["unimportant_sec_filing", "ugc"],
+    exclusions: ["unimportant_sec_filing", "ugc", "trading_activity", "market_news", ],
     // All options: us_rss, cn_rss,
     // This one is not exposed to users.
     // An empty array means all sources are acceptable.
