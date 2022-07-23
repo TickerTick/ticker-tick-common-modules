@@ -77,12 +77,18 @@ const isValidUrl = (url) => {
   }
   return isValid;
 };
+const isBest = function (story) {
+  if (story.tags && (BEST_TAG in story.tags)) {
+    return true;
+  }
+  if (story.best) {
+    return true;
+  }
+  return false;
+};
 
 export function extractTopStories(stories, minClusterSize=3) {
   let topStories = [];
-  const isBest = function (story) {
-    return story.tags && (BEST_TAG in story.tags);
-  };
 
   for (let story of stories) {
     let isTopStory = false;
@@ -123,6 +129,13 @@ export async function fetchStories(feedUrl) {
   let similar_stories = new Set();
   let removed_stories = new Set();
   for (let story of result.stories) {
+    if (isBest(story)) {
+      story.best = true;
+      let bestIdx = story.tags.indexOf(BEST_TAG);
+      if (bestIdx >= 0) {
+        story.tags.splice(bestIdx, 1);
+      }
+    }
     // Remove 'favicon_url' to any other site.
     if (story.favicon_url && !story.favicon_url.match(TICKER_TICK_SITE_REGEX)) {
       delete story.favicon_url;
