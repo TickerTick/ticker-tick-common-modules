@@ -297,8 +297,9 @@ export const buildFeedUrlParameters = (tickers, filters, opts = {}) => {
   if (exclusion_queries.length > 0) {
     query = `(diff ${query} (or ${exclusion_queries.join(" ")}))`;
   }
-
-  if (query.length > 2000) {
+  // http protocal doesn't limit the url length.
+  // The TickerTick backend http server doesn't have a limit either.
+  if (query.length > 4000) {
     console.error(
       `Backend search query too long (${query.length} bytes) for filters: ${filters}`
     );
