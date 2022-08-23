@@ -1,5 +1,9 @@
 ## Ticker Tick Common modules
 
+## How to modify the package
+ - first, do the changes
+ - second, please run `npm run build` to generate new build
+ - third, please commit all changes including the new build
 
 ## How to publish new versions
  - ok, so, merge all PRs
