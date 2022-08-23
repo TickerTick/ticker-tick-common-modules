@@ -116,13 +116,13 @@ export function extractTopStories(stories, minClusterSize=3) {
 }
 
 export function getTopStories(stories) {
-    for (let clusterSize = 3; clusterSize >= 1; --clusterSize) {
-        let top_stories = extractTopStories(stories, clusterSize);
-        if (top_stories.length > 0) {
-            return top_stories;
-        }
+  for (let clusterSize = 3; clusterSize >= 1; --clusterSize) {
+    let top_stories = extractTopStories(stories, clusterSize);
+    if (top_stories.length > 0) {
+      return top_stories;
     }
-    return stories;
+  }
+  return stories;
 }
 
 // May throw an exception
