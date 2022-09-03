@@ -2,10 +2,10 @@
 export const kFullFilterObject = {
   storyTypes: {
     // Use the singular form
-    top_story: {
+    /* top_story: {
       value: "top_story",
       label: "Top story",
-    },
+    }, */
     financial_business_news: {
       value: "financial_business_news",
       label: "Best business news",
@@ -18,7 +18,7 @@ export const kFullFilterObject = {
       value: "industry",
       label: "Industry publication",
     },
-    government: { value: "government", label: "Govt. News" },
+    // government: { value: "government", label: "Govt. News" },
     most_relevant: {
       value: "most_relevant",
       label: "Most relevant news",
