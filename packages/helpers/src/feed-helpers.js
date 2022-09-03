@@ -22,6 +22,8 @@ const TRADING_ACTIVITY_QUERY = "T:trade";
 
 const SEC_FILING_QUERY = "(and s:sec tld:gov)";
 
+const GOV_QUERY = "(diff tld:gov s:sec)";
+
 // Note that foreign companies' 6-k forms for quarterly earnings
 // are not included here.
 const FINANCIAL_SEC_FILING_QUERY = "T:sec_fin";
@@ -58,6 +60,7 @@ const kStoryTypeQueryMap = {
   financial_business_news: FIN_BIZ_NEWS_QUERY,
   analysis: ANALYSIS_QUERY,
   industry: INDUSTRY_QUERY,
+  government: GOV_QUERY,
 };
 
 const kSecStoryTypes = new Set([

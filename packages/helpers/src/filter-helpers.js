@@ -18,6 +18,7 @@ export const kFullFilterObject = {
       value: "industry",
       label: "Industry publication",
     },
+    government: { value: "government", label: "Govt. News" },
     most_relevant: {
       value: "most_relevant",
       label: "Most relevant news",
@@ -34,7 +35,6 @@ export const kFullFilterObject = {
     },
     trading_activity: { value: "trading_activity", label: "Trading Activity" },
     market_news: { value: "market_news", label: "Market News" },
-    government: { value: "gov", label: "Government" },
   },
   exclusions: {
     unimportant_sec_filing: {
